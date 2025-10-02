@@ -7,33 +7,32 @@ import MainLayout from "./layouts/MainLayout";
 import NotFound from "./Pages/NotFound";
 import ForgetPassword from "./Pages/ForgetPassword";
 import MessageSent from "./Pages/MessageSent";
-// import Survey from "./Pages/Survey"; 
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
       <Route path="/message-sent" element={<MessageSent />} />
 
-      {/* Protected Routes (only accessible when logged in) */}
-      {isLoggedIn ? (
-        <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/users" element={<UserManagement />} />
-          {/* <Route path="/survey" element={<Survey />} /> */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        </Route>
-      ) : (
-        // If not logged in, redirect all unknown paths to login
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      )}
+      {/* Protected routes */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="users" element={<UserManagement />} />
+      </Route>
 
-      {/* Catch-all for logged-in users who mistype a route */}
-      {isLoggedIn && <Route path="*" element={<NotFound />} />}
+      {/* Catch-all */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
