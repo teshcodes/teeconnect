@@ -35,7 +35,7 @@ export default function ForgotPassword() {
           Forget <span className="font-bold">Your Password</span>
         </h1>
 
-        <p className="text-sm text-left mb-6 lg:mb-7 mr-[16pc]">
+        <p className="text-sm text-left mb-6 lg:mb-7 lg:mr-[16pc] mr-[2pc]">
           We will send a verification link to your email. Kindly check your inbox
           or spam. Can't remember your mail? Contact <span className="underline hover:text-gray-400 cursor-pointer"> Customer support</span>.
         </p>

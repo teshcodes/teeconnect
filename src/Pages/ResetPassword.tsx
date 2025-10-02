@@ -65,7 +65,7 @@ export default function ResetPassword() {
           Reset <span className="font-bold">Your Password</span>
         </h1>
 
-        <p className="text-sm text-left mb-6 lg:mb-7 mr-[16pc]">
+        <p className="text-sm text-left mb-6 lg:mb-7 lg:mr-[16pc] mr-[1pc]">
           Enter your new password in the field below. Having troubles in
           resetting password?{" "}
           <span className="underline hover:text-gray-400 cursor-pointer">

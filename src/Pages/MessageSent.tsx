@@ -28,7 +28,7 @@ export default function MessageSent() {
           <img src ="/marked-icon.gif" className="w-5 h-5 mt-1" />
         </h1>
 
-        <p className="text-sm text-left mb-6 lg:mb-7 mr-[15pc]">
+        <p className="text-sm text-left mb-6 lg:mb-7 lg:mr-[15pc] mr-[1pc]">
           A link has been sent to your mail to continue your process of resetting
           your password. Kindly check your inbox or spam.
         </p>
