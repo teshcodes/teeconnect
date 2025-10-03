@@ -1,9 +1,20 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FaBars, FaTimes, FaSignOutAlt, FaBell } from "react-icons/fa";
 
 export default function MobileSidebar() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  // Map routes to page titles
+  const pageTitles: Record<string, string> = {
+    "/dashboard": "Dashboard",
+    "/users": "User Management",
+    "/survey": "Survey",
+  };
+
+  // Get title based on current path (default fallback: "Dashboard")
+  const currentTitle = pageTitles[location.pathname] || "Dashboard";
 
   return (
     <div className="bg-purple-600 text-white flex items-center justify-between p-4">
@@ -12,11 +23,13 @@ export default function MobileSidebar() {
         {open ? <FaTimes size={20} /> : <FaBars size={20} />}
       </button>
 
-      {/* Center: Title */}
-      <h1 className="font-bold">User Management</h1>
+      {/* Center: Dynamic Title */}
+      <h1 className="font-bold">{currentTitle}</h1>
 
-      {/* Right: Placeholder (bell/profile/etc) */}
-      <div> <FaBell /> </div>
+      {/* Right: Bell */}
+      <div>
+        <FaBell />
+      </div>
 
       {/* Slide-out Drawer */}
       {open && (
@@ -28,10 +41,10 @@ export default function MobileSidebar() {
               className={({ isActive }) =>
                 `flex items-center gap-3 ${
                   isActive ? "text-[#1F66B7]" : "text-gray-600"
-                } hover:text-[#1F66B7] hover:bg-[#1F66B7]`
+                } hover:text-[#1F66B7]`
               }
             >
-              <img src="/dashboard-logo.png" /> Dashboard
+              <img src="/dashboard-logo.png" alt="Dashboard" /> Dashboard
             </NavLink>
 
             <NavLink
@@ -43,11 +56,11 @@ export default function MobileSidebar() {
                 } hover:text-[#1F66B7]`
               }
             >
-              <img src="/user-logo.png" /> User Management
+              <img src="/user-logo.png" alt="Users" /> User Management
             </NavLink>
 
             <NavLink
-              to="/ai"
+              to="/survey"
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 ${
@@ -55,7 +68,7 @@ export default function MobileSidebar() {
                 } hover:text-[#1F66B7]`
               }
             >
-              <img src="/survey-logo.png" /> Survey
+              <img src="/survey-logo.png" alt="Survey" /> Survey
             </NavLink>
           </nav>
 

@@ -1,4 +1,4 @@
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaChevronRight } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
@@ -48,6 +48,7 @@ export default function Sidebar() {
           <p className="font-medium">Tesh Codes</p>
           <p className="text-sm text-gray-400">Admin</p>
         </div>
+        <FaChevronRight className="ml-10" />
       </div>
     </aside>
   );
