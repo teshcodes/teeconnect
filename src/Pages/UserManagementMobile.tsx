@@ -232,7 +232,7 @@ export default function UserManagementMobile() {
                                         </button>
 
                                         {/*  <=============  Submenu  ==========>*/}
-                                        <div className="absolute left-full top-0 hidden group-hover:block w-46 bg-white shadow-lg rounded-lg border z-30">
+                                        <div className="absolute buttom-full top-15 hidden group-hover:block w-46 bg-white shadow-lg rounded-lg border z-30">
                                             {["User", "Admin", "Super Admin", "Uncategorised"].map((role) => (
                                                 <div
                                                     key={role}
