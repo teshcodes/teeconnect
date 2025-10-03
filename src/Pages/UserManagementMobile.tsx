@@ -224,7 +224,7 @@ export default function UserManagementMobile() {
                         </button>
 
                         {actionsOpen && (
-                            <div className="sm:absolute sm:left-full sm:top-0 sm:w-56 w-fullabsolute left-2 mt-1 ml-[-15pc] w-64 bg-white shadow-lg rounded-lg z-20 border">
+                            <div className="absolute top-0 sm:w-56 left-2 mt-1 ml-[-15pc] w-64 bg-white shadow-lg rounded-lg z-20 border">
                                 {["Assign Permission", "Change Status", "Delete All"].map((menu) => (
                                     <div key={menu} className="group relative border-t first:border-t-0">
                                         <button className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100 text-gray-800 font-medium">
