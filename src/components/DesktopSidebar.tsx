@@ -18,6 +18,8 @@ export default function Sidebar() {
         </div>
       </div>
 
+      
+
       {/* --- Middle: Navigation Links --- */}
       <nav className="flex-1 flex flex-col gap-2 px-4 mt-4">
         {navItems.map(({ path, label, icon }) => (
