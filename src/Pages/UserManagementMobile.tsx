@@ -6,7 +6,10 @@ import {
     FaFileImport,
     FaChevronLeft,
     FaChevronRight,
-    FaArrowRight,
+    FaArrowLeft,
+    FaTimes,
+    FaExclamationCircle,
+    FaPlus,
 } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 
@@ -29,6 +32,9 @@ export default function UserManagementMobile() {
     const [statusFilter, setStatusFilter] = useState("All");
     const [permissionFilter, setPermissionFilter] = useState("All");
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [showForm, setShowForm] = useState(true);
+    const [showAlert, setShowAlert] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
     const [rowsDropdownOpen, setRowsDropdownOpen] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
     const [actionsOpen, setActionsOpen] = useState(false);
@@ -101,6 +107,50 @@ export default function UserManagementMobile() {
         setSelectedUsers([]);
     };
 
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        phone: "",
+        department: "",
+        permission: "",
+    })
+
+    const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        if (value.trim() !== "") {
+            setErrors((prev) => ({ ...prev, [name]: false }));
+        }
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const newErrors: { [key: string]: boolean } = {};
+
+        // Validate required fields
+        ["firstName", "lastName", "email", "department", "permission"].forEach((field) => {
+            if (!formData[field as keyof typeof formData]) {
+                newErrors[field] = true;
+            }
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        // Success – hide form, show success overlay
+        setShowForm(false);
+        setShowSuccess(true);
+
+        console.log("✅ Form submitted successfully:", formData);
+    };
+
     return (
         <div className="bg-gray-100 min-h-screen mt-[2pc]">
             <div className="p-4">
@@ -125,8 +175,8 @@ export default function UserManagementMobile() {
                             <button
                                 className="flex justify-center items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg text-gray-800 font-medium"
                                 onClick={() => {
-                                    console.log("Fill manually clicked");
                                     setDropdownOpen(false);
+                                    setShowForm(true);
                                 }}
                             >
                                 <FaEdit /> Fill Manually
@@ -142,7 +192,247 @@ export default function UserManagementMobile() {
                             </button>
                         </div>
                     )}
+
+                    {/* Full-Screen Form Overlay */}
+                    {showForm && (
+                        <div className="fixed inset-0 z-50 flex justify-center items-start backdrop-blur-sm bg-black/30 overflow-y-auto">
+                            <div className="bg-white w-full sm:w-[450px] min-h-screen rounded-none sm:rounded-lg shadow-2xl relative">
+                                {/* Breadcrumb */}
+                                <h1 className="opacity-75 items-center p-4 sticky bg-gray-200">User Management / <span className="text-purple-500">Add New User</span></h1>
+                                {/* Header */}
+                                <div className="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
+                                    <h2 className="text-lg font-semibold text-gray-800">Add New User</h2>
+                                    <button
+                                        onClick={() => setShowForm(false)}
+                                        className="text-gray-500 hover:text-gray-700 transition"
+                                    >
+                                        <FaTimes size={20} />
+                                    </button>
+                                </div>
+
+                                {/* 🔴 Alert Message (when user submits empty form) */}
+                                {showAlert && (
+                                    <div className="flex items-center justify-between bg-red-100 border border-red-400 text-red-700 px-4 py-3 mx-4 mt-4 rounded-md animate-fadeIn">
+                                        <div className="flex items-center gap-5">
+                                            <div className="border-lg bg-red-200 px-2 py-2">
+                                                <FaExclamationCircle className="text-red-400 text-lg" />
+                                            </div>
+                                            <p className="text-sm font-medium">
+                                                Please fill in all required fields.
+                                                <p>Double-check and try again.</p>
+                                            </p>
+                                        </div>
+                                        <button
+                                            onClick={() => setShowAlert(false)}
+                                            className="text-red-500 hover:text-red-700 transition mb-4"
+                                        >
+                                            <FaTimes size={14} />
+                                        </button>
+                                    </div>
+                                )}
+
+                                {/* Form */}
+                                <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
+                                    {/* First Name */}
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="firstName"
+                                            value={formData.firstName}
+                                            onChange={handleChange}
+                                            placeholder="First Name *"
+                                            className={`w-full border rounded-md p-2 focus:ring-2 outline-none placeholder:text-gray-500 ${errors.firstName ? "border-red-500 border-2" : "focus:ring-purple-600"
+                                                }`}
+                                        />
+                                    </div>
+
+                                    {/* Last Name */}
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="lastName"
+                                            value={formData.lastName}
+                                            onChange={handleChange}
+                                            placeholder="Last Name *"
+                                            className={`w-full border rounded-md p-2 focus:ring-2 outline-none placeholder:text-gray-500 ${errors.lastName ? "border-red-500 border-2" : "focus:ring-purple-600"
+                                                }`}
+                                        />
+                                    </div>
+
+                                    {/* Email */}
+                                    <div>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            placeholder="Email Address *"
+                                            className={`w-full border rounded-md p-2 focus:ring-2 outline-none placeholder:text-gray-500 ${errors.email ? "border-red-500 border-2" : "focus:ring-purple-600"
+                                                }`}
+                                        />
+                                    </div>
+
+                                    {/* Username */}
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="username"
+                                            value={formData.username}
+                                            onChange={handleChange}
+                                            placeholder="Username"
+                                            className="w-full border rounded-md p-2 focus:ring-2 focus:ring-purple-600 outline-none placeholder:text-gray-500"
+                                        />
+                                    </div>
+
+                                    {/* Phone */}
+                                    <div>
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            placeholder="Phone Number"
+                                            className="w-full border rounded-md p-2 focus:ring-2 focus:ring-purple-600 outline-none placeholder:text-gray-500"
+                                        />
+                                    </div>
+
+                                    {/* Department */}
+                                    <div>
+                                        <select
+                                            name="department"
+                                            value={formData.department}
+                                            onChange={handleChange}
+                                            className={`w-full border rounded-md p-2 focus:ring-2 outline-none text-gray-700 ${errors.department ? "border-red-500 border-2" : "focus:ring-purple-600"
+                                                }`}
+                                        >
+                                            <option value="" disabled>
+                                                Select Department *
+                                            </option>
+                                            <option value="engineering">Engineering</option>
+                                            <option value="marketing">Marketing</option>
+                                            <option value="hr">Human Resources</option>
+                                            <option value="finance">Finance</option>
+                                            <option value="sales">Sales</option>
+                                            <option value="operations">Operations</option>
+                                            <option value="it">IT Support</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Permission */}
+                                    <div>
+                                        <select
+                                            name="permission"
+                                            value={formData.permission}
+                                            onChange={handleChange}
+                                            className={`w-full border rounded-md p-2 focus:ring-2 outline-none text-gray-700 ${errors.permission ? "border-red-500 border-2" : "focus:ring-purple-600"
+                                                }`}
+                                        >
+                                            <option value="" disabled>
+                                                Permission *
+                                            </option>
+                                            <option value="user">User</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="superadmin">Super Admin</option>
+                                        </select>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition"
+                                    >
+                                        Submit
+                                    </button>
+                                    {/* Cancel Button */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowForm(false)}
+                                        className="w-full border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-100 transition"
+                                    >
+                                        Cancel
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* <================= SUCCESS SCREEN ==============> */}
+                    {showSuccess && (
+                        <div className="fixed inset-0 z-50 flex flex-col bg-white px-6 mt-13">
+                            <div className="flex justify-center items-center mb-3 mt-10">
+                                <div className="w-10 h-10 rounded-full bg-green-100 flex justify-center items-center">
+                                    <img
+                                        src="/check-circle.png"
+                                        alt="check circle"
+                                        className="w-5 h-5"
+                                    />
+                                </div>
+                            </div>
+
+
+                            <h2 className="justify-center items-center text-center text-xl font-semibold text-gray-800 mb-2">
+                                User added successfully!
+                            </h2>
+
+                            <div className="justify-start items-start text-base space-y-1 mb-6">
+                                <p className="my-5">
+                                    <span className="text-gray-500">Full Name: </span>
+                                    {formData.firstName || formData.lastName ? `${formData.firstName} ${formData.lastName}`.trim() : "N/A"}
+                                </p>
+                                <p className="mb-5">
+                                    <span className="text-gray-500">Email Address:</span>
+                                    <p>{formData.email || "N/A"}</p>
+                                </p>
+                                <p className="mb-5">
+                                    <span className="text-gray-500">Permission:</span>
+                                    <p>{formData.permission || "N/A"}</p>
+                                </p>
+                                <p className="underline text-purple-400 font-medium cursor-pointer mb-3">
+                                    Edit
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col w-full gap-3">
+                                <button
+                                    onClick={() => {
+                                        setShowSuccess(false);
+                                        setFormData({
+                                            firstName: "",
+                                            lastName: "",
+                                            email: "",
+                                            username: "",
+                                            phone: "",
+                                            department: "",
+                                            permission: "",
+                                        });
+                                    }}
+                                    className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition"
+                                >
+                                    Finish
+                                </button>
+
+                                <button
+                                    onClick={() => {
+                                        setShowSuccess(false);
+                                        setShowForm(true);
+                                        setFormData({
+                                            firstName: "",
+                                            lastName: "",
+                                            email: "",
+                                            username: "",
+                                            phone: "",
+                                            department: "",
+                                            permission: "",
+                                        });
+                                    }}
+                                    className="w-full border border-gray-300 text-gray-700 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+                                >
+                                    <FaPlus className="mr-1" /> Add More Users
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
+
 
                 {/* Search + Filter */}
                 <div className="flex gap-3 mb-4 relative">
@@ -224,37 +514,67 @@ export default function UserManagementMobile() {
                         </button>
 
                         {actionsOpen && (
-                            <div className="absolute top-0 sm:w-56 left-2 mt-1 ml-[-15pc] w-64 bg-white shadow-lg rounded-lg z-20 border">
-                                {["Assign Permission", "Change Status", "Delete All"].map((menu) => (
-                                    <div key={menu} className="group relative border-t first:border-t-0">
-                                        <button className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100 text-gray-800 font-medium">
-                                            {menu} <FaArrowRight />
-                                        </button>
+                            <div className="absolute top-15 sm:w-50 left-43 mt-1 ml-[-15pc] w-64 bg-white shadow-lg rounded-lg z-20 border">
+                                {["Assign Permission", "Change Status", "Delete All"].map((menu) => {
+                                    // Submenu items logic
+                                    const submenuItems =
+                                        menu === "Assign Permission"
+                                            ? ["User", "Admin", "Super Admin", "Uncategorised"]
+                                            : ["Active", "Inactive"];
 
-                                        {/*  <=============  Submenu  ==========>*/}
-                                        <div className="absolute buttom-full top-15 hidden group-hover:block w-46 bg-white shadow-lg rounded-lg border z-30">
-                                            {["User", "Admin", "Super Admin", "Uncategorised"].map((role) => (
-                                                <div
-                                                    key={role}
-                                                    onClick={() => toggleRole(menu, role)}
-                                                    className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
-                                                >
-                                                    <span>{role}</span>
-                                                    <button
-                                                        className={`w-5 h-5 border border-gray-400 rounded-full flex items-center justify-center ${selectedRoles[menu] === role ? "bg-purple-600 border-purple-600" : ""
-                                                            }`}
-                                                    >
-                                                        {selectedRoles[menu] === role && (
-                                                            <span className="w-2 h-2 bg-white rounded-full"></span>
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            ))}
+                                    return (
+                                        <div key={menu} className="group relative first:mt-4 last:mb-4">
+                                            <button className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 text-gray-800 font-medium">
+                                                <FaArrowLeft /> {menu}
+                                            </button>
+
+                                            {/* ===== Submenu ===== */}
+                                            <div className="absolute right-full top-0 hidden group-hover:block w-46 bg-white shadow-lg rounded-lg border z-30">
+                                                {submenuItems.map((item) => {
+                                                    const isActive = item === "Active";
+                                                    const isInactive = item === "Inactive";
+
+                                                    return (
+                                                        <div
+                                                            key={item}
+                                                            onClick={() => toggleRole(menu, item)}
+                                                            className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
+                                                        >
+                                                            <span
+                                                                className={`${isActive
+                                                                    ? "text-green-600 font-medium"
+                                                                    : isInactive
+                                                                        ? "text-red-500 font-medium"
+                                                                        : "text-gray-700"
+                                                                    }`}
+                                                            >
+                                                                {item}
+                                                            </span>
+                                                            <button
+                                                                className={`w-5 h-5 border border-gray-400 rounded-full flex items-center justify-center ${selectedRoles[menu] === item
+                                                                    ? isActive
+                                                                        ? "bg-green-600 border-green-600"
+                                                                        : isInactive
+                                                                            ? "bg-red-600 border-red-600"
+                                                                            : "bg-purple-600 border-purple-600"
+                                                                    : ""
+                                                                    }`}
+                                                            >
+                                                                {selectedRoles[menu] === item && (
+                                                                    <span className="w-2 h-2 bg-white rounded-full"></span>
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         )}
+
+
 
                     </div>
                 </div>

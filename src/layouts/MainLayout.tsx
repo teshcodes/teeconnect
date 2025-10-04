@@ -5,7 +5,6 @@ import MobileSidebar from "../components/MobileSidebar";
 export default function MainLayout() {
   const location = useLocation();
 
-  // Apply margin only if NOT on dashboard
   const noMarginRoutes = ["/dashboard"];
   const applyMargin = !noMarginRoutes.includes(location.pathname);
 
