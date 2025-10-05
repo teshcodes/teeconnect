@@ -17,7 +17,7 @@ export default function MobileSidebar() {
   const currentTitle = pageTitles[location.pathname] || "Dashboard";
 
   return (
-    <div className="bg-purple-600 text-white flex items-center justify-between p-4">
+    <div className="bg-purple-600 text-white flex items-center justify-between px-8 py-4">
       {/* Left: Hamburger */}
       <button onClick={() => setOpen(!open)}>
         {open ? <FaTimes size={20} /> : <FaBars size={20} />}

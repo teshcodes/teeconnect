@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { FaTimes, FaExclamationCircle } from "react-icons/fa";
+import { FaTimes, FaExclamationCircle, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import MobileSidebar from "../../components/MobileSidebar";  
 
-export default function AddUser() {
+export default function AddUserMobile() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -49,24 +50,14 @@ export default function AddUser() {
   const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-start z-50 overflow-y-auto">
-      <div className="w-full sm:w-[450px] min-h-screen bg-white shadow-2xl relative rounded-none sm:rounded-lg">
-        {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
-          <h2 className="text-lg font-semibold text-gray-800">
-            {success ? "Success" : "Add New User"}
-          </h2>
-          <button
-            onClick={() => navigate("/users")}
-            className="text-gray-500 hover:text-gray-700 transition"
-          >
-            <FaTimes size={20} />
-          </button>
-        </div>
+    <div className="fixed inset-0 bg-white z-50 flex flex-col">
+      <MobileSidebar />
 
-        {/* Alert */}
+      {/* Main Content Area */}
+      <div className="flex-1 mt-[60px] overflow-y-auto px-4 pb-10">
+        {/* 🔴 Alert */}
         {showAlert && (
-          <div className="flex items-center justify-between bg-red-100 border border-red-400 text-red-700 px-4 py-3 mx-4 mt-4 rounded-md">
+          <div className="flex items-center justify-between bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mt-4">
             <div className="flex items-center gap-4">
               <div className="bg-red-200 p-2 rounded-full">
                 <FaExclamationCircle className="text-red-400 text-lg" />
@@ -87,27 +78,29 @@ export default function AddUser() {
           </div>
         )}
 
-        {/* Success */}
+        {/* ✅ Success Screen */}
         {success ? (
-          <div className="flex flex-col items-center justify-center text-center px-6 py-12">
-            <div className="w-16 h-16 rounded-full bg-green-200 flex items-center justify-center mb-5">
-              <img src="/check-circle.png" alt="check" className="w-8 h-8" />
+          <div className="flex flex-col px-2 py-8">
+            <div className="text-center mt-5">
+              <div className="w-16 h-16 rounded-full bg-green-200 flex items-center justify-center mb-5 mx-auto">
+                <img src="/check-circle.png" alt="check" className="w-8 h-8" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                User Added Successfully!
+              </h3>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              User Added Successfully!
-            </h3>
-
-            <div className="text-gray-600 text-sm space-y-2 mb-6">
-              <p>
+            <div className="text-gray-600 text-sm space-y-2 mb-6 text-start mt-4">
+              <p className="mb-5">
                 <span className="text-gray-400">Full Name: </span>
                 {fullName || "N/A"}
               </p>
-              <p>
+              <p className="mb-5">
                 <span className="text-gray-400">Email Address: </span>
-                {formData.email || "N/A"}
+                <p>{formData.email || "N/A"}</p>
               </p>
-              <p>
+              <p className="mb-3">
                 <span className="text-gray-400">Permission: </span>
                 {formData.permission || "N/A"}
               </p>
@@ -131,21 +124,21 @@ export default function AddUser() {
               }}
               className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition mb-3"
             >
-              Add Another User
+              Finish
             </button>
 
             <button
               onClick={() => navigate("/users")}
-              className="w-full border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-100 transition"
+              className="w-full border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-100 transition flex items-center justify-center gap-2"
             >
-              Back to Users
+              <FaPlus /> Add more Users
             </button>
           </div>
         ) : (
-          // Form
+          // 📝 Form Section
           <form
             onSubmit={handleSubmit}
-            className="p-6 space-y-5 overflow-y-auto max-h-[calc(100vh-70px)]"
+            className="pt-4 space-y-5 overflow-y-auto"
           >
             <input
               type="text"

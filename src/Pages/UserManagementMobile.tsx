@@ -106,10 +106,10 @@ export default function UserManagementMobile() {
 
 
     return (
-        <div className="bg-gray-100 min-h-screen mt-[2pc]">
+        <div className="bg-gray-100 min-h-screen mt-[3pc]">
             <div className="p-4">
                 {/* Title */}
-                <h1 className="text-xl font-semibold text-gray-800 mb-1">Manage Users</h1>
+                <h1 className="text-xl font-semibold text-gray-800  mb-1">Manage Users</h1>
                 <p className="text-sm text-gray-600 mb-4">
                     Administer and oversee user accounts and privileges within the platform.
                 </p>
@@ -117,9 +117,8 @@ export default function UserManagementMobile() {
                 {/* New User Button */}
                 <div className="relative mb-4" ref={dropdownRef}>
                     <button
-                        onClick={() => {
+                    onClick={() => {
                             setDropdownOpen(!dropdownOpen);
-                            navigate("/users/add");
                         }}
                         className="flex justify-center items-center gap-2 text-white bg-purple-600 px-4 py-2 rounded-lg hover:bg-purple-500 transition w-full"
                     >
@@ -132,9 +131,9 @@ export default function UserManagementMobile() {
                             <button
                                 className="flex justify-center items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg text-gray-800 font-medium"
                                 onClick={() => {
-                                    setDropdownOpen(false);
-
-                                }}
+                            setDropdownOpen(false);
+                            navigate("/users/add");
+                        }}
                             >
                                 <FaEdit /> Fill Manually
                             </button>

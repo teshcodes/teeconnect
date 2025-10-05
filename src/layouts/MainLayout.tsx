@@ -22,7 +22,7 @@ export default function MainLayout() {
 
       {/* Main Content */}
       <main
-        className={`flex-1 bg-gray-100 p-6 ${
+        className={`flex-1 bg-gray-100 px-6 ${
           applyMargin ? "lg:ml-64" : "lg:ml-0"
         }`}
       >

@@ -8,10 +8,20 @@ import NotFound from "./Pages/NotFound";
 import ForgetPassword from "./Pages/ForgetPassword";
 import MessageSent from "./Pages/MessageSent";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AddUser from "./Pages/AddUser";
+import AddUserMobile from "./Pages/mobile/AddUserMobile";
+import AddUserDesktop from "./Pages/desktop/AddUserDesktop";
+import { useEffect, useState } from "react";
  
 
 export default function App() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <Routes>
       {/* Public routes */}
@@ -31,7 +41,7 @@ export default function App() {
         <Route index element={<Navigate to="/login" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<UserManagement />} />
-        <Route path="users/add" element={<AddUser />} />
+        <Route path="users/add" element={isMobile ? <AddUserMobile /> : <AddUserDesktop />} />
       </Route>
 
       {/* Catch-all */}
