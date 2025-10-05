@@ -19,7 +19,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       {/* Header */}
-      <header className="flex justify-between items-center mb-10 mt-5">
+      <header className="flex justify-between items-center mb-10 mt-[4pc]">
         <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
         <button
           onClick={handleLogout}

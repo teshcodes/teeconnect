@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaSignOutAlt, FaBell } from "react-icons/fa";
+
 
 export default function MobileSidebar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Map routes to page titles
   const pageTitles: Record<string, string> = {
@@ -15,6 +17,11 @@ export default function MobileSidebar() {
 
   // Get title based on current path (default fallback: "Dashboard")
   const currentTitle = pageTitles[location.pathname] || "Dashboard";
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/login");
+  };
 
   return (
     <div className="bg-purple-600 text-white flex items-center justify-between px-8 py-4">
@@ -72,7 +79,9 @@ export default function MobileSidebar() {
             </NavLink>
           </nav>
 
-          <button className="mt-6 flex items-center gap-3 text-gray-600 hover:text-red-600">
+          <button className="mt-6 flex items-center gap-3 text-gray-600 hover:text-red-600"
+          onClick={handleLogout}
+          >
             <FaSignOutAlt /> Logout
           </button>
         </div>
