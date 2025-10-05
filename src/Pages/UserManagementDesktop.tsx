@@ -140,13 +140,10 @@ export default function UserManagement() {
     };
 
     return (
-        <div className="flex">
+        <div className="flex ">
             <div className="flex-1">
-                {/* Top Navigation */}
-                 
-
                 {/* Page Content */}
-                <div className="bg-[#F0F7FF] p-6 py-25 flex-1 ml-[-17.5pc] mr-[-1.5pc] relative overflow-hidden">
+                <div className="bg-[#F0F7FF] p-6 py-25 flex-1 ml-[-17.5pc] mr-[-1.5pc] relative overflow-hidden mt-[-2pc]">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-gray-800 text-lg font-medium">Manage Users</h1>
 
