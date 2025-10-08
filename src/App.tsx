@@ -1,5 +1,4 @@
-// src/App.tsx
-import { Routes, Route, Navigate } from "react-router-dom";
+ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Pages/Login";
 import Dashboard from "./Pages/Dashboard";
 import UserManagement from "./Pages/UserManagement";
@@ -10,6 +9,8 @@ import MessageSent from "./Pages/MessageSent";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddUserMobile from "./Pages/mobile/AddUserMobile";
 import AddUserDesktop from "./Pages/desktop/AddUserDesktop";
+import EditUserMobile from "./Pages/mobile/EditUserMobile";
+import EditUserDesktop from "./Pages/desktop/EditUserDesktop";
 import { useEffect, useState } from "react";
  
 
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="users/add" element={isMobile ? <AddUserMobile /> : <AddUserDesktop />} />
+        <Route path="users/edit" element={isMobile ? <EditUserMobile /> : <EditUserDesktop />} />
       </Route>
 
       {/* Catch-all */}

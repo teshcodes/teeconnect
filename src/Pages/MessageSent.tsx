@@ -1,5 +1,5 @@
-// src/pages/MessageSent.tsx
 import { useNavigate } from "react-router-dom";
+
 
 export default function MessageSent() {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export default function MessageSent() {
     <div
       className="h-screen w-screen flex flex-col justify-center items-center relative text-white px-4"
       style={{
-        backgroundImage: "url('/bg-image3.png')", // 👈 use your new background
+        backgroundImage: "url('/bg-image3.png')",  
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundColor: "#0F172A",
