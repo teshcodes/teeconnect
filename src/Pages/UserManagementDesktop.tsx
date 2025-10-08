@@ -44,6 +44,7 @@ export default function UserManagementDesktop() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   // const [rowsDropdownOpen, setRowsDropdownOpen] = useState(false);
@@ -325,7 +326,11 @@ export default function UserManagementDesktop() {
                               return (
                                 <div
                                   key={item}
-                                  onClick={() => toggleRole(menu, item)}
+                                  onClick={() => {
+                                    if (menu === "Assign Permission") {
+                                      toggleRole(menu, item as Role);
+                                    }
+                                  }}
                                   className="flex justify-between items-center px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                                 >
                                   <span
@@ -415,8 +420,18 @@ export default function UserManagementDesktop() {
                           <td className="p-3 text-left whitespace-nowrap flex items-center gap-2">
                             <input
                               type="checkbox"
-                              checked={selectedUsers.includes(user.id)}
-                              onChange={() => () => toggleSelect(user.id)}
+                              checked={isChecked}
+                              onChange={() => {
+                                setSelectedUsers((prev) => {
+                                  if (prev.includes(userId)) {
+                                    // Unselect this user only
+                                    return prev.filter((id) => id !== userId);
+                                  } else {
+                                    // Select this user only
+                                    return [...prev, userId];
+                                  }
+                                });
+                              }}
                               className="accent-[#1F66B7] w-4 h-4 cursor-pointer"
                             />
                             <span>
